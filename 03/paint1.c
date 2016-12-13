@@ -138,6 +138,21 @@ void draw_line(const int x0, const int y0, const int x1, const int y1)
   }
 }
 
+void draw_circle(const int cx, const int cy, const int r)
+{
+  int x, y;
+
+  for (y = 0; y < HEIGHT; y++) {
+    for (x = 0; x < WIDTH; x++) {
+      const int dist = (x - cx) * (x - cx) + (y - cy) * (y - cy);
+
+      if (r * r <= dist && dist < (r + 1) * (r + 1)) {
+        canvas[x][y] = '#';
+      }
+    }
+  }
+}
+
 void save_history(const char *filename)
 {
   if (filename == NULL)
@@ -193,6 +208,15 @@ int interpret_command(const char *command)
     draw_line(x1, y0, x1, y1);
     draw_line(x0, y0, x1, y0);
     draw_line(x0, y1, x1, y1);
+    return 0;
+  }
+
+  if (strcmp(s, "circ") == 0) {
+    int cx, cy, r;
+    cx = atoi(strtok(NULL, " "));
+    cy = atoi(strtok(NULL, " "));
+    r = atoi(strtok(NULL, " "));
+    draw_circle(cx, cy, r);
     return 0;
   }
 
